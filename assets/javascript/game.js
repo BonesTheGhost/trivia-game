@@ -14,16 +14,27 @@ console.log("*** trivia game -- game.js attached! ***");
 
 // ===== Variables =====
 
+//Timer variable
+count = 3;
+
 //This array will hold the question phrases.
-var questionArray = ["How many story arcs are there in the original Starcraft?", "Placeholder 2"];
+var questionArray = ["How many story arcs are there in the original Starcraft?", "What are the humans called in Starcraft?"];
 //This array holds the id's? for each button so the specific button can be referenced.
-var idArray = ["first", "second", "third", "fourth"];
+var idArray = ["0", "1", "2", "3", "4", "5", "6", "7"];
+
+//This are the answer choices to be displayed.
+var possibleAnswers = ["No campaigns", "1 campaigns", "2 campaigns", "3 campaigns", "Terrans", "Timbers", "Humans", "Proto-men"];
 
 //ANSWERKEY :: This holds the CORRECT answer for each question -> SO for question 1, the correct answer is C.
-var answers = ["a2", "b", "c", "d"]
+var answers = ["a2", "b", "c", "d"];
+
+var playerAnswers = [""];
 
 //Control variable for writing the number of questions to the page. 
 var numOfQuestions = 1;
+
+//Control Variable for controlling where the idArray starts
+var idController = 0
 
 //The start game button
 var welcome = document.createElement("BUTTON");
@@ -39,22 +50,33 @@ function gameStart() {
     var welcome = $("<button>");
 
     //Set the ID for the button
-    welcome.id = 'gameStartButton';
+    welcome.id = "gameStartButton";
+    console.log(welcome.id);
 
     //Set the text for the button
     welcome.text("Start Game!");
     $("#welcome-button").append(welcome);
 }
 
-
-
 //Function for creating the space for questions.
 function prepForQuestion() {
     $("#mid-section").append(questionArray[0]);
 }
 
+//Function for drawing a single question.
 function drawButtons() {
-    for (i = 0; i < idArray.length; i++); {
+    for (i = 0; i < idArray.length; i++) {
+
+        if (i === 0) {
+            $("#mid-section").append("<br>");
+            console.log("*** DIV appended for questions ***");
+        }
+        else if (i === 4) {
+            $("#mid-section").append("<br>");
+            console.log("*** DIV appended for 2ND SET of questions ***");
+            $("#mid-section").append(questionArray[1]);
+            $("#mid-section").append("<br>");
+        }
 
         //iteration counter
         console.log("Array is on iteration ", i);
@@ -64,22 +86,52 @@ function drawButtons() {
         console.log("Button created.");
 
         //assign the button the necessary id for which question its tied to
-        tempButton.attr("data-id", idArray[i]);
+        tempButton.attr("data-id", "tempID");
         console.log("Button assigned id: ", + idArray[i]);
 
         //Give the button text
-        tempButton.text("Hi");
+        tempButton.text("");
 
         //Append the Button
         $("#mid-section").append(tempButton);
+
+        //Append the text to the right side of the button
+        $("#mid-section").append(possibleAnswers[i]);
+
+        //Increment the idController
+        idController++
+        console.log("idController is currently ", idController);
 
 
     }
 
 }
 
+//For counting down!
+function timer() {
+    count --;
+    if (count <= 0) {
+        clearInterval(counter);
+        console.log("Timer registered completed");
 
-//Function for drawing a single question.
+        //Clear the sections when the time runs out.
+        $("#mid-section").empty();
+        $("#top-section").empty();
+        return;
+    }
+    $("#top-section").html("Time remaining: " + "00:" + count + " secs");
+
+}
+
+//For formatting?
+function padMe() {
+    $("#mid-section").append("<br>");
+    $("#mid-section").append("<br>");
+    $("#mid-section").append("<br>");
+}
+
+//For cleaning up at the end of the game?
+
 
 
 
@@ -106,9 +158,14 @@ $(document).ready(function () {
     console.log("Document Listener Active :: Waiting for input.");
 
     //On-click for the game start button
-    $(this).on("click", function (event) {
+    //The CONTAINER has to have the 'on click' functionality delegated to it, NOT the button itself.
+    $("#welcome-button").on("click", function (event) {
         //For testing button input
         console.log("[BUTTON CLICKED] :: Start Game");
+
+        //Initializing the timer
+        counter = setInterval(timer, 1000);
+
 
         //Clear the button and log
         $("#welcome-button").empty();
