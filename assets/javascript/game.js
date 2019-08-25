@@ -15,7 +15,7 @@ console.log("*** trivia game -- game.js attached! ***");
 // ===== Variables =====
 
 //Timer variable
-count = 3;
+count = 31;
 
 //This array will hold the question phrases.
 var questionArray = ["How many story arcs are there in the original Starcraft?", "What are the humans called in Starcraft?"];
@@ -26,9 +26,14 @@ var idArray = ["0", "1", "2", "3", "4", "5", "6", "7"];
 var possibleAnswers = ["No campaigns", "1 campaigns", "2 campaigns", "3 campaigns", "Terrans", "Timbers", "Humans", "Proto-men"];
 
 //ANSWERKEY :: This holds the CORRECT answer for each question -> SO for question 1, the correct answer is C.
-var answers = ["a2", "b", "c", "d"];
+var answers = ["3", "0", ""];
 
 var playerAnswers = [""];
+
+//Response Data
+var numberCorrect = 0;
+var numberIncorrect = 0;
+var unAnswered = 0;
 
 //Control variable for writing the number of questions to the page. 
 var numOfQuestions = 1;
@@ -117,6 +122,14 @@ function timer() {
         //Clear the sections when the time runs out.
         $("#mid-section").empty();
         $("#top-section").empty();
+
+        $("#mid-section").append("Correct Answers: ", numberCorrect);
+        $("#mid-section").append("<br>");
+        $("#mid-section").append("Incorrect Answers: ", numberCorrect);
+        $("#mid-section").append("<br>");
+        $("#mid-section").append("Unanswered: ", numberCorrect);
+        $("#mid-section").append("<br>");
+
         return;
     }
     $("#top-section").html("Time remaining: " + "00:" + count + " secs");
@@ -128,6 +141,19 @@ function padMe() {
     $("#mid-section").append("<br>");
     $("#mid-section").append("<br>");
     $("#mid-section").append("<br>");
+}
+
+//Which Answer selected
+function logAnswer() {
+    if (clicked >= 0 || <= 3) {
+        playerAnswers[0] = clicked;
+    }
+    else if (clicked >= 4 && <= 7) {
+        playerAnswers[1] = clicked;
+    }
+
+    console.log("[CLICK REGISTERED] ");
+    console.log("playerAnswers: ", playerAnswers);
 }
 
 //For cleaning up at the end of the game?
@@ -174,5 +200,10 @@ $(document).ready(function () {
         //For now draw the questions from this location
         prepForQuestion();
         drawButtons();
+    });
+
+    $("mid-section").on("click", function (event) {
+        clicked = event;
+        logAnswer();
     });
 });
