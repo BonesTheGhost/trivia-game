@@ -39,7 +39,7 @@ var unAnswered = 0;
 var numOfQuestions = 1;
 
 //Control Variable for controlling where the idArray starts
-var idController = 0
+var idController = 0;
 
 //The start game button
 var welcome = document.createElement("BUTTON");
@@ -141,20 +141,20 @@ function padMe() {
     $("#mid-section").append("<br>");
     $("#mid-section").append("<br>");
     $("#mid-section").append("<br>");
-}
+};
 
 //Which Answer selected
 function logAnswer() {
-    if (clicked >= 0 || <= 3) {
+    if (this.id >= 0 || this.id <= 3) {
         playerAnswers[0] = clicked;
     }
-    else if (clicked >= 4 && <= 7) {
+    else if (this.id >= 4 && this.id <= 7) {
         playerAnswers[1] = clicked;
     }
 
     console.log("[CLICK REGISTERED] ");
     console.log("playerAnswers: ", playerAnswers);
-}
+};
 
 //For cleaning up at the end of the game?
 
@@ -202,8 +202,7 @@ $(document).ready(function () {
         drawButtons();
     });
 
-    $("mid-section").on("click", function (event) {
-        clicked = event;
+    $(this).on("click", function (event) {
         logAnswer();
     });
 });
